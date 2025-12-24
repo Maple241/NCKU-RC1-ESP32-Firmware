@@ -1,7 +1,7 @@
 // 搖桿參數設定
-const int JOYSTICK_MAX = 512;  
-const int JOYSTICK_MIN = -512; 
-const int DEADZONE = 30;       
+const int JOYSTICK_MAX = 512;
+const int JOYSTICK_MIN = -512;
+const int DEADZONE = 30;
 
 // 馬達 PWM 參數
 const int PWM_MAX = 255;       // ESP32 PWM 最大佔空比
@@ -36,4 +36,5 @@ int processJoystickValue(int rawInput) {
 	if (outputPWM < -255) outputPWM = -255;
 	
 	return outputPWM;
+
 }
