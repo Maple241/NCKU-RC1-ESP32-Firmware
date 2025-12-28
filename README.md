@@ -47,7 +47,7 @@ B. 安裝 Library
 2. **ESP32Servo** (by Kevin Harrington / Madamaria)
 
 C. 燒錄
-1.  前往本專案的 **[Releases 頁面]** ("https://github.com/Maple241/NCKU-RC1-ESP32-Firmware/releases/tag/v1.0.0")。
+1.  前往本專案的 **[Releases 頁面]**。
 2.  下載 `RC1.7z`。
 3.  解壓縮後，直接開啟 `RC1.ino`。
 4.  設定開發板為 `NodeMCU-32S`，選擇 Port 並上傳。
