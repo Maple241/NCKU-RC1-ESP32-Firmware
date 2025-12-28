@@ -1,47 +1,68 @@
 #include "diff_drive.h"
+#include "config.h"
+#include <math.h>
 
-int resultLeftPWM = 0;
-int resultRightPWM = 0;
+int resultLeftPWM = 0;   // signed: -255 .. 255
+int resultRightPWM = 0;  // signed
 
 void calculateDiffDrive(int throttleSigned, int steerAngle) {
-  // throttleSigned: -255 .. 255
-  if (throttleSigned == 0 && abs(steerAngle) > 5) {
-    // spin in place using steer magnitude
+  // throttleSigned: -PWM_MAX .. PWM_MAX
+  // steerAngle: -35 .. 35 (positive = right turn)
+
+  // If throttle is very small (we want to rotate in place), enable spin-in-place:
+  const int SPIN_THRESHOLD = 5; // throttle magnitude below which spin-in-place may be allowed
+  int throttleMag = abs(throttleSigned);
+
+  if (throttleMag <= SPIN_THRESHOLD && abs(steerAngle) > 5) {
+    // spin-in-place: left and right have opposite signs
     int spin = map(abs(steerAngle), 0, 35, 0, PWM_MAX);
-    if (steerAngle > 0) { // turn right in place -> left forward, right backward
+    if (steerAngle > 0) {
+      // turn right in place: left forward, right backward
       resultLeftPWM = spin;
       resultRightPWM = -spin;
     } else {
+      // turn left in place
       resultLeftPWM = -spin;
       resultRightPWM = spin;
     }
     return;
   }
 
-  // normal driving: use abs throttle magnitude but keep sign for direction
-  float sign = throttleSigned >= 0 ? 1.0f : -1.0f;
-  int throttleMag = abs(throttleSigned);
+  // Normal differential drive (w/ ackermann-like ratio)
+  float sign = (throttleSigned >= 0) ? 1.0f : -1.0f;
 
   if (abs(steerAngle) < 1) {
-    resultLeftPWM = sign * throttleMag;
-    resultRightPWM = sign * throttleMag;
+    // Straight
+    int out = (int)constrain(throttleMag, 0, PWM_MAX);
+    resultLeftPWM = (int)(sign * out);
+    resultRightPWM = (int)(sign * out);
     return;
   }
 
-  float thetaRad = radians(abs(steerAngle));
+  // Compute ackermann ratio safely: avoid tan(0)
+  float thetaRad = radians((float)abs(steerAngle));
   float R = WHEEL_BASE / tan(thetaRad);
+
   float innerRatio = 1.0f - (TRACK_WIDTH / (2.0f * R));
   float outerRatio = 1.0f + (TRACK_WIDTH / (2.0f * R));
 
-  int left, right;
+  // ratio can go below zero for extreme geometry; clamp to small positive
+  if (innerRatio < 0.0f) innerRatio = 0.0f;
+
+  int leftMag, rightMag;
   if (steerAngle > 0) {
-    left = (int)(throttleMag * outerRatio + 0.5f);
-    right = (int)(throttleMag * innerRatio + 0.5f);
+    // right turn: left is outer, right is inner
+    leftMag = (int)(throttleMag * outerRatio + 0.5f);
+    rightMag = (int)(throttleMag * innerRatio + 0.5f);
   } else {
-    left = (int)(throttleMag * innerRatio + 0.5f);
-    right = (int)(throttleMag * outerRatio + 0.5f);
+    leftMag = (int)(throttleMag * innerRatio + 0.5f);
+    rightMag = (int)(throttleMag * outerRatio + 0.5f);
   }
-  // apply sign for direction
-  resultLeftPWM = (int)constrain(sign * left, -PWM_MAX, PWM_MAX);
-  resultRightPWM = (int)constrain(sign * right, -PWM_MAX, PWM_MAX);
+
+  // clamp magnitudes
+  if (leftMag > PWM_MAX) leftMag = PWM_MAX;
+  if (rightMag > PWM_MAX) rightMag = PWM_MAX;
+
+  resultLeftPWM = (int)constrain((int)(sign * leftMag), -PWM_MAX, PWM_MAX);
+  resultRightPWM = (int)constrain((int)(sign * rightMag), -PWM_MAX, PWM_MAX);
 }
