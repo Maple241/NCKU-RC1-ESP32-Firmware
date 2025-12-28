@@ -10,7 +10,7 @@
 * **Motors**: JGA25-370 (12V) x2
 * **Power**: 2S 18650 Li-ion Battery (7.4V)
 
-## 軟體功能 (Current Progress)
+## 軟體
 
 ### 1. 搖桿訊號處理
 - [x] **死區過濾**: 消除搖桿回中時的雜訊飄移。
