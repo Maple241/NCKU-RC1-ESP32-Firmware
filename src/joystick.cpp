@@ -23,8 +23,7 @@ int processJoystickValue(int rawInput) {
 
   // Normalize magnitude to 0..1 taking joystick max into account
   float normalized = (float)(magRaw - DEADZONE) / (float)(JOYSTICK_MAX - DEADZONE);
-  if (normalized < 0.0f) normalized = 0.0f;
-  if (normalized > 1.0f) normalized = 1.0f;
+  normalized = constrain(normalized, 0.0f, 1.0f);
 
   // Apply exponential throttle curve for smoother low-end control
   float curved = powf(normalized, THROTTLE_EXPONENT);
