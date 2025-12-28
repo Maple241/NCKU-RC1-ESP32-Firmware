@@ -1,6 +1,5 @@
 #include "bluetooth.h"
 
-// 定義實體
 XboxSeriesXControllerESP32_asukiaaa::Core xboxController;
 
 void initBluetooth() {
