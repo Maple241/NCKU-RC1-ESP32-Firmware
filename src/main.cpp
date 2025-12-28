@@ -54,6 +54,7 @@ void loop() {
   if (!isControllerConnected()) {
     setMotor(PIN_MOTOR_L_IN1, PIN_MOTOR_L_IN2, 0, false);
     setMotor(PIN_MOTOR_R_IN3, PIN_MOTOR_R_IN4, 0, false);
+    delay(100);
     return;
   }
 
