@@ -1,19 +1,30 @@
 #include <Arduino.h>
 #include "config.h"
 #include "joystick.h"
+#include "bluetooth.h"
 
 void setup() {
   Serial.begin(115200);
+  initBluetooth();
 }
 
 void loop() {
-  // test
-  int rawY = 100;
+  updateBluetooth();
+  if (isControllerConnected()) {
+    // Get the raw data from the Bluetooth connection.
+    int rawLx = getXboxJoyLX();
+    int rawLy = getXboxJoyLY();
 
-  int motorPWM = processJoystickValue(rawY);
+    // Dead zone logic judgment
+    int motorInputX = processJoystickValue(rawLx);
+    int motorInputY = processJoystickValue(rawLy);
 
-  Serial.print("PWM: ");
-  Serial.println(motorPWM);
-  
-  delay(100);
+    // int leftPWM, rightPWM;
+    // calculateDiffDrive(motorInputY, motorInputX, leftPWM, rightPWM);
+
+    // Test: Print out the processed values
+    Serial.print("Raw:"); Serial.print(rawLy);
+    Serial.print(" -> Processed:"); Serial.println(motorInputY);
+  }
+  delay(10);
 }
