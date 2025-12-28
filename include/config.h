@@ -5,6 +5,7 @@
 #define JOYSTICK_MIN -512
 #define DEADZONE 30
 #define PWM_MAX 255
+#define PWM_MIN 0
 
 // Pin defidition
 // 1. DRV8833
