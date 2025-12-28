@@ -10,10 +10,10 @@ extern int resultLeftPWM;
 extern int resultRightPWM;
 
 /**
- * 計算電子差速
- * throttle: 油門輸入 (0 ~ 255)
- * steerAngle: 轉向角度 (例如 -35 ~ 35，正值為右轉)
- */
+* Calculate electronic differential
+* Throttle: Throttle input (0 ~ 255)
+* SteerAngle: Steering angle (e.g., -35 ~ 35, positive value for right turn)
+*/
 void calculateDiffDrive(int throttle, int steerAngle);
 
 #endif
