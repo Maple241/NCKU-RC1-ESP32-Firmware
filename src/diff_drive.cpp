@@ -62,6 +62,6 @@ void calculateDiffDrive(int throttleSigned, int steerAngle) {
   if (leftMag > PWM_MAX) leftMag = PWM_MAX;
   if (rightMag > PWM_MAX) rightMag = PWM_MAX;
 
-  resultLeftPWM = (int)constrain((int)(sign * leftMag), -PWM_MAX, PWM_MAX);
-  resultRightPWM = (int)constrain((int)(sign * rightMag), -PWM_MAX, PWM_MAX);
+  resultLeftPWM = (int)(sign * leftMag);
+  resultRightPWM = (int)(sign * rightMag);
 }
