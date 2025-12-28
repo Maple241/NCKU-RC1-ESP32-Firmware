@@ -1,3 +1,15 @@
+# NCKU RC1 - CK07 Style Dual-Motor RC Car
+
+這是 **2025 新生專題 RC1 組** 的韌體控制專案。
+使用 **ESP32** 與 **Xbox 控制器**，實現雙馬達後輪驅動與電子差速轉向。
+
+## 硬體
+* **MCU**: NodeMCU-32S (ESP32)
+* **Controller**: Xbox Series Controller (via Bluetooth)
+* **Driver**: DRV8833 Dual Motor Driver
+* **Motors**: JGA25-370 (12V) x2
+* **Power**: 2S 18650 Li-ion Battery (7.4V)
+
 (變更摘要)
 
 已完成的項目：
