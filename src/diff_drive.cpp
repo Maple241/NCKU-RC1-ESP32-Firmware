@@ -33,9 +33,8 @@ void calculateDiffDrive(int throttleSigned, int steerAngle) {
 
   if (abs(steerAngle) < 1) {
     // Straight
-    int out = (int)constrain(throttleMag, 0, PWM_MAX);
-    resultLeftPWM = (int)(sign * out);
-    resultRightPWM = (int)(sign * out);
+    resultLeftPWM = (int)(sign * throttleMag);
+    resultRightPWM = (int)(sign * throttleMag);
     return;
   }
 
