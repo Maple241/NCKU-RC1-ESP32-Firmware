@@ -8,7 +8,7 @@
 #define PWM_MAX 255
 #define PWM_MIN 0
 
-// LEDC / PWM 設定 (ESP32)
+// LEDC / PWM setting (ESP32)
 #define PWM_FREQ 2000          // Hz
 #define PWM_RESOLUTION 8       // bits (0..255)
 #define LEDC_CH_ML_IN1 0
